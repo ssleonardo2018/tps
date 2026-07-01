@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Orçamentos - TechPrime Soluções</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- QRCode.js Library CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cabeçalho de Três Áreas com a Logo Oficial -->
+        <header class="budget-header card">
+            <div class="header-left">
+                <div class="logo-container">
+                    <img src="logo.bmp" alt="TechPrime Soluções" id="img-company-logo" class="company-logo">
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <h1>ORÇAMENTO</h1>
+                <div class="budget-meta">
+                    <p><strong>Nº:</strong> <span id="budget-number">000000</span></p>
+                    <p><strong>Data:</strong> <span id="budget-date">--/--/----</span></p>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="company-info">
+                    <h3 id="lbl-comp-name">TechPrime Soluções</h3>
+                    <p id="lbl-comp-cnpj">CNPJ: 12.345.678/0001-99</p>
+                    <p id="lbl-comp-phone">Tel: (22) 99999-8888</p>
+                    <p id="lbl-comp-email">Email: contato@techprime.com.br</p>
+                    <a href="https://www.techprime.com.br" id="lbl-comp-site" target="_blank">www.techprime.com.br</a>
+                    
+                    <!-- Container Dinâmico de Redes Sociais -->
+                    <div id="header-socials" class="header-socials-container">
+                        <!-- Inseridos via JS se configurados -->
+                    </div>
+                </div>
+                <div id="qrcode" class="qrcode-container"></div>
+            </div>
+        </header>
+
+        <!-- Configuração de Impressão Rápida -->
+        <div class="print-toggle-wrapper card no-print">
+            <label class="checkbox-label">
+                <input type="checkbox" id="chk-show-materials" checked>
+                <span class="checkbox-custom"></span>
+                Exibir lista de materiais na impressão
+            </label>
+        </div>
+
+        <form id="form-budget" onsubmit="event.preventDefault();">
+            
+            <!-- Dados Simplificados do Cliente -->
+            <section class="card">
+                <h2><i class="fa-solid fa-user"></i> Dados do Cliente</h2>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="cli-name">Nome Completo*</label>
+                        <input type="text" id="cli-name" required placeholder="Ex: João Silva">
+                    </div>
+                    <div class="form-group">
+                        <label for="cli-whatsapp">WhatsApp*</label>
+                        <input type="text" id="cli-whatsapp" required placeholder="(XX) 9XXXX-XXXX">
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div class="form-group col-span-2">
+                        <label for="cli-street">Rua</label>
+                        <input type="text" id="cli-street" placeholder="Av. Principal">
+                    </div>
+                    <div class="form-group">
+                        <label for="cli-number">Número</label>
+                        <input type="text" id="cli-number" placeholder="123">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="cli-neighborhood">Bairro</label>
+                        <input type="text" id="cli-neighborhood" placeholder="Centro">
+                    </div>
+                    <div class="form-group">
+                        <label for="cli-ref">Referência</label>
+                        <input type="text" id="cli-ref" placeholder="Próximo ao mercado">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cli-obs">Observações do Cliente</label>
+                    <textarea id="cli-obs" rows="2" placeholder="Restrições de horário, detalhes de entrega..."></textarea>
+                </div>
+            </section>
+
+            <!-- Dados Básicos do Serviço -->
+            <section class="card">
+                <h2><i class="fa-solid fa-gears"></i> Dados do Serviço</h2>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="srv-type">Tipo de Serviço*</label>
+                        <input type="text" id="srv-type" required placeholder="Ex: Instalação Elétrica, Manutenção">
+                    </div>
+                    <div class="form-group">
+                        <label for="srv-value">Valor Base do Serviço (R$)*</label>
+                        <input type="number" id="srv-value" min="0" step="0.01" value="0.00" required class="calc-trigger">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="srv-desc">Descrição do Serviço*</label>
+                    <textarea id="srv-desc" rows="3" required placeholder="Descreva detalhadamente as etapas do serviço..."></textarea>
+                </div>
+            </section>
+
+            <!-- Tabela Dinâmica de Materiais -->
+            <section class="card section-materials">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-box"></i> Lista de Materiais</h2>
+                    <button type="button" id="btn-add-material" class="btn btn-secondary no-print">
+                        <i class="fa-solid fa-plus"></i> Adicionar Material
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table id="table-materials">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th width="100px">Qtd</th>
+                                <th width="150px">Valor Unitário (R$)</th>
+                                <th width="150px">Valor Total</th>
+                                <th width="80px" class="no-print">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-materials">
+                            <!-- Inserção via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-total">
+                    Total de Materiais: <span id="total-materials-label">R$ 0,00</span>
+                </div>
+            </section>
+
+            <!-- Tabela Dinâmica de Mão de Obra -->
+            <section class="card">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-person-digging"></i> Lista de Mão de Obra</h2>
+                    <button type="button" id="btn-add-labor" class="btn btn-secondary no-print">
+                        <i class="fa-solid fa-plus"></i> Adicionar Serviço
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table id="table-labor">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th width="100px">Qtd</th>
+                                <th width="150px">Valor Unitário (R$)</th>
+                                <th width="150px">Valor Total</th>
+                                <th width="80px" class="no-print">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-labor">
+                            <!-- Inserção via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-total">
+                    Total de Mão de Obra: <span id="total-labor-label">R$ 0,00</span>
+                </div>
+            </section>
+
+            <!-- Resumo de Totais e Sistema de Desconto -->
+            <div class="grid-2-columns">
+                <!-- Descontos -->
+                <section class="card no-print">
+                    <h2><i class="fa-solid fa-tags"></i> Sistema de Desconto</h2>
+                    <div class="form-group">
+                        <label for="discount-type">Tipo de Desconto</label>
+                        <select id="discount-type">
+                            <option value="none">Sem desconto</option>
+                            <option value="percent">Desconto em %</option>
+                            <option value="value">Desconto em R$</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="discount-value-wrapper" style="display: none;">
+                        <label for="discount-value">Valor do Desconto</label>
+                        <input type="number" id="discount-value" min="0" step="0.01" value="0">
+                    </div>
+                </section>
+
+                <!-- Painel Financeiro -->
+                <section class="card financial-panel">
+                    <h2><i class="fa-solid fa-calculator"></i> Totais</h2>
+                    <div class="summary-line"><span>Valor do Serviço:</span> <span id="sum-service">R$ 0,00</span></div>
+                    <div class="summary-line"><span>Total Materiais:</span> <span id="sum-materials">R$ 0,00</span></div>
+                    <div class="summary-line"><span>Total Mão de Obra:</span> <span id="sum-labor">R$ 0,00</span></div>
+                    <div class="summary-line subtotal"><span>Subtotal:</span> <span id="sum-subtotal">R$ 0,00</span></div>
+                    <div class="summary-line discount"><span>Desconto:</span> <span id="sum-discount">- R$ 0,00</span></div>
+                    <div class="summary-line total-general"><span>TOTAL GERAL:</span> <span id="sum-total">R$ 0,00</span></div>
+                </section>
+            </div>
+
+            <!-- Área Fixa para Assinaturas -->
+            <section class="signature-section">
+                <div class="signature-block">
+                    <div class="line"></div>
+                    <p>Assinatura do Cliente</p>
+                </div>
+                <div class="signature-block">
+                    <div class="line"></div>
+                    <p>Assinatura da Empresa</p>
+                </div>
+            </section>
+
+            <!-- Painel de Operações / Botões -->
+            <div class="actions-panel no-print">
+                <button type="button" id="btn-config" class="btn btn-secondary" title="Configurações da Empresa"><i class="fa-solid fa-gear"></i> Empresa</button>
+                <button type="button" id="btn-new" class="btn btn-secondary"><i class="fa-solid fa-file-circle-plus"></i> Novo</button>
+                <button type="button" id="btn-clear" class="btn btn-danger"><i class="fa-solid fa-broom"></i> Limpar</button>
+                <button type="button" id="btn-print" class="btn btn-success"><i class="fa-solid fa-print"></i> Imprimir / PDF</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal de Configuração dos Dados Corporativos -->
+    <div id="modal-config" class="modal-overlay no-print">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-sliders"></i> Alterar Dados Corporativos</h2>
+                <button type="button" id="btn-close-modal" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inp-upload-logo">Nova Logomarca (Substituir logo.bmp)</label>
+                    <input type="file" id="inp-upload-logo" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="inp-comp-name">Nome da Empresa</label>
+                    <input type="text" id="inp-comp-name" value="TechPrime Soluções">
+                </div>
+                <div class="form-group">
+                    <label for="inp-comp-cnpj">CNPJ</label>
+                    <input type="text" id="inp-comp-cnpj" value="12.345.678/0001-99">
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="inp-comp-phone">Telefone</label>
+                        <input type="text" id="inp-comp-phone" value="(22) 99999-8888">
+                    </div>
+                    <div class="form-group">
+                        <label for="inp-comp-email">E-mail</label>
+                        <input type="text" id="inp-comp-email" value="contato@techprime.com.br">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inp-comp-site">Website (Atualiza o QR Code)</label>
+                    <input type="text" id="inp-comp-site" value="https://www.techprime.com.br">
+                </div>
+                
+                <h3 class="modal-section-title"><i class="fa-solid fa-share-nodes"></i> Links de Redes Sociais</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="inp-comp-insta">Instagram (Link completo ou vazio)</label>
+                        <input type="text" id="inp-comp-insta" placeholder="https://instagram.com/perfil">
+                    </div>
+                    <div class="form-group">
+                        <label for="inp-comp-face">Facebook (Link completo ou vazio)</label>
+                        <input type="text" id="inp-comp-face" placeholder="https://facebook.com/pagina">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-save-config" class="btn btn-success">Salvar Configurações</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

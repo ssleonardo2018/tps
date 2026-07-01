@@ -1,0 +1,312 @@
+/* --- Variáveis de Design Base (Inspirado na Logo TechPrime) --- */
+:root {
+    --color-primary: #00ff66;         /* Verde Neon Principal da Logo */
+    --color-primary-hover: #00cc52;   /* Verde Vibrante para Hovers */
+    --color-bg: #0b0f19;              /* Fundo Geral Escuro Premium */
+    --color-card-bg: #131c2e;         /* Fundo dos Cards Grafite Escuro */
+    --color-white: #ffffff;
+    --color-text: #94a3b8;            /* Texto secundário acinzentado */
+    --color-text-dark: #f8fafc;       /* Texto principal claro para alto contraste */
+    --color-border: #1e293b;          /* Bordas sutis */
+    --color-danger: #ef4444;
+    --color-success: #00ff66;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    --radius: 8px;
+}
+
+/* --- Estilos Gerais de Reset --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    padding: 30px 15px;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* --- Componentes: Cards e Estrutura --- */
+.card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 8px;
+}
+
+h2 i {
+    color: var(--color-primary);
+}
+
+/* --- Layout Grid Responsivo --- */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.grid-2-columns { display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; }
+.col-span-2 { grid-column: span 2; }
+
+@media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-2-columns { grid-template-columns: 1fr !important; }
+    .col-span-2 { grid-column: span 1; }
+}
+
+/* --- Formulários e Elementos de Entrada --- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-text-dark);
+}
+
+input[type="text"], input[type="number"], input[type="file"], select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    background-color: #0b0f19;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--color-text-dark);
+    transition: all 0.2s ease;
+}
+
+input[type="file"] {
+    padding: 6px 12px;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px rgba(0, 255, 102, 0.2);
+}
+
+/* --- Cabeçalho customizado com Logo --- */
+.budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background: #000000;
+    border-color: #22c55e33;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.company-logo {
+    max-height: 85px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.header-center { text-align: center; }
+.header-center h1 { font-size: 1.6rem; letter-spacing: 2px; color: var(--color-white); }
+.budget-meta { font-size: 0.85rem; margin-top: 4px; color: var(--color-primary); }
+
+.header-right { display: flex; align-items: center; gap: 15px; text-align: right; }
+.company-info { font-size: 0.8rem; }
+.company-info h3 { font-size: 0.95rem; color: var(--color-white); font-weight: 700; margin-bottom: 2px; }
+.company-info a { color: var(--color-primary); text-decoration: none; font-weight: 500; }
+.company-info a:hover { text-decoration: underline; }
+
+.header-socials-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+.header-socials-container a {
+    font-size: 1rem;
+    color: var(--color-primary);
+    transition: opacity 0.2s;
+}
+.header-socials-container a:hover { opacity: 0.7; }
+
+.qrcode-container { background: white; padding: 5px; border-radius: 4px; }
+
+@media (max-width: 768px) {
+    .budget-header { flex-direction: column; text-align: center; }
+    .header-right { text-align: center; flex-direction: column; }
+    .header-socials-container { justify-content: center; }
+}
+
+/* --- Tabelas Dinâmicas --- */
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.section-header h2 { margin-bottom: 0; border: none; padding: 0; }
+.table-responsive { width: 100%; overflow-x: auto; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+}
+
+th { background-color: #0b0f19; font-weight: 500; color: var(--color-text-dark); }
+td input { background-color: transparent !important; padding: 6px !important; }
+.section-total { text-align: right; padding-top: 10px; font-weight: 600; font-size: 0.95rem; color: var(--color-primary); }
+
+/* --- Painel de Totais Financeiros --- */
+.financial-panel { background: #1e293b; border: 1px solid #334155; }
+.summary-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.9rem; color: var(--color-text-dark); }
+.summary-line.subtotal { border-top: 1px solid #334155; margin-top: 8px; padding-top: 8px; }
+.summary-line.discount { color: var(--color-danger); }
+.summary-line.total-general {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #000000;
+    background-color: var(--color-primary);
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 8px;
+    box-shadow: 0 4px 10px rgba(0, 255, 102, 0.2);
+}
+
+/* --- Custom Checkbox UI --- */
+.print-toggle-wrapper { padding: 12px 20px; border-color: #22c55e33; }
+.checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; color: var(--color-text-dark); }
+
+/* --- Elementos de Botão --- */
+.btn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #0b0f19;
+    transition: all 0.2s ease;
+}
+.btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary { background-color: var(--color-primary); color: #000; }
+.btn-secondary { background-color: #334155; color: var(--color-white); }
+.btn-danger { background-color: var(--color-danger); color: white; }
+.btn-success { background-color: var(--color-primary); color: #000; }
+.btn-sm { padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; }
+
+.actions-panel { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+
+/* --- Seção de Assinaturas (Oculta na Tela) --- */
+.signature-section { display: none; margin-top: 5px; justify-content: space-between; gap: 50px; padding: 0 20px; }
+.signature-block { flex: 1; text-align: center; font-size: 0.85rem; color: #000; }
+.signature-block .line { border-top: 1px solid #000; margin-bottom: 5px; margin-top: 40px; }
+
+/* --- Componente Base do Modal (Configurações) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(11, 15, 25, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+    opacity: 1; pointer-events: auto;
+}
+.modal-card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    width: 90%; max-width: 550px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+}
+.modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--color-border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h2 { border: none; margin: 0; padding: 0; }
+.modal-close-btn {
+    background: transparent; border: none;
+    color: var(--color-text); font-size: 1.5rem; cursor: pointer;
+}
+.modal-close-btn:hover { color: var(--color-danger); }
+.modal-body { padding: 20px; overflow-y: auto; max-height: 70vh; }
+.modal-section-title {
+    font-size: 0.95rem; font-weight: 600; color: var(--color-primary);
+    margin: 15px 0 10px 0; border-bottom: 1px dashed var(--color-border); padding-bottom: 4px;
+}
+.modal-footer {
+    padding: 15px 20px; border-top: 1px solid var(--color-border);
+    display: flex; justify-content: flex-end;
+}
+
+/* --- REGRAS CSS ESPECÍFICAS PARA IMPRESSÃO (A4) --- */
+@media print {
+    body { background: #fff !important; color: #000 !important; padding: 0; font-size: 10pt; }
+    .container { max-width: 100%; width: 100%; }
+    .card { border: none !important; box-shadow: none !important; padding: 0 !important; margin-bottom: 15px !important; background: transparent !important; }
+    .no-print { display: none !important; }
+    
+    h2 { color: #000 !important; border-bottom: 1px solid #cbd5e1 !important; }
+    h2 i { color: #000 !important; }
+    .budget-header { background: transparent !important; border-bottom: 2px solid #000 !important; }
+    .header-center h1, .company-info h3, .form-group label { color: #000 !important; }
+    .budget-meta { color: #000 !important; }
+    .company-logo { filter: grayscale(1) contrast(1.2); }
+    .header-socials-container { display: none !important; } /* Oculta as redes na folha impressa */
+
+    input, select, textarea {
+        border: none !important;
+        border-bottom: 1px dashed #94a3b8 !important;
+        background: transparent !important;
+        padding: 2px 0 !important;
+        color: #000 !important;
+        resize: none;
+    }
+    
+    th { background: #f1f5f9 !important; color: #000 !important; }
+    td { color: #000 !important; }
+    body.hide-materials .section-materials { display: none !important; }
+    .section-total { color: #000 !important; }
+    .financial-panel { background: transparent !important; border: 1px solid #cbd5e1 !important; padding: 10px !important; }
+    .summary-line { color: #000 !important; }
+    .summary-line.total-general { background: #f1f5f9 !important; color: #000 !important; box-shadow: none !important; border: 1px solid #000 !important; }
+    .signature-section { display: flex !important; }
+}
